@@ -1,3 +1,4 @@
 # Ignore Pipenv filesp
 Pipfile
 .lock
+./uploads
