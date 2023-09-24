@@ -1,12 +1,19 @@
 from flask import Flask, request, jsonify
+import cv2
 
 app = Flask(__name__)
 
-@app.route('/scan_image', methods=['POST'])
-def scan_image():
-    image = request.files['image'].read()
-    hashtable = cv2.scan_image(image)
-    return jsonify(hashtable)
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
-if __name__ == '__main__':
-    app.run()
+@app.route('/predict', methods=['POST'])
+def predict():
+    image = request.files['image'].read()
+    processed_image = preprocess_image(image)
+    prediction = model.predict(processed_image)
+    return jsonify(prediction.tolist())
+
+def preprocess_image(image):
+    processed_image = ...
+    return processed_image
