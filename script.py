@@ -1,31 +1,28 @@
 import cv2
-import numpy as np 
-import matplotlib.pyplot as plt 
+import numpy as np
+from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+from keras.preprocessing import image
 
-im = cv2.cvtConvert(im, cv2.COLOR_RGB2HSV)# # im[:, :, N] where N is the channel you need
-# 0=H, 1=S, V=2
-# let's try to make saturation + 80
-im[:, :, 1] += 80# reconvert before display
+# Load the VGG16 model with pre-trained weights
+model = VGG16(weights='imagenet')
 
-def augmentation(im, fact=.0):
-    if fact > 1:
-        fact = 1.0
-    # get HSV
-    hsv = cv2.cvtColor(im, cv2.COLOR_RGB2HSV)
-    
-    # set it to numpy array
-    hsv = np.array(hsv)
-    h = hsv[:,:,0]
-    s = hsv[:,:,1]
-    v = hsv[:,:,2]
-    
-    # fact * channel
-    hsv[:,:,0] = np.where(h*fact <= 255, fact*h, h)
-    hsv[:,:,1] = np.where(s*fact <= 255, fact*s, s)
-    hsv[:,:,2] = np.where(v*fact <= 255, fact*v, v)
-    
-    # return hsv and rgb
-    return hsv, cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
+# Load the image
+image_path = 'fridge.png'  # Change this to the path of your 'fridge.png' image
+img = image.load_img(image_path, target_size=(224, 224))
+x = image.img_to_array(img)
+x = np.expand_dims(x, axis=0)
+x = preprocess_input(x)
 
-plt.imshow(cv2.cvtConvert(im, cv2.COLOR_HSV2RGB))
-plt.show()
+# Predict the image class
+predictions = model.predict(x)
+decoded_predictions = decode_predictions(predictions, top=5)[0]
+
+# Check if any of the top-5 predicted classes contain food-related labels
+food_labels = ["banana", "apple", "pizza", "sandwich", "spaghetti", "ice_cream", "hotdog", "sushi", "steak"]
+contains_food = any(label.lower() in label.lower() for (_, label, _) in decoded_predictions)
+
+# Display the results
+if contains_food:
+    print("The image contains food!")
+else:
+    print("The image does not contain food.")
