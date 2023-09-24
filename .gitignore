@@ -2,3 +2,10 @@
 Pipfile
 .lock
 ./uploads/*
+uploads
+poetry.lock
+Pipfile.lock
+pyproject.toml
+vdb_tests.ipynb
+archive
+.venv
