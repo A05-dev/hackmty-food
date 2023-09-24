@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-6 mx-auto mt-5 text-center">
                 <h1 class="mb-5">Upload Image</h1>
-                <p class="mb-5"> {{ predicted_text }} </p>
+                <p> {{ response }} </p>
                 <form method="post" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
                     {% for error in form.photo.errors %}
