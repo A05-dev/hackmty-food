@@ -1,15 +1,21 @@
 from flask import Flask, render_template, send_from_directory, url_for, jsonify
-from flask_uploads import UploadSet, IMAGES, configure_uploadsx
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
+import os
 
+from dotenv import load_dotenv
 import openai
+
+load_dotenv()
 
 app = Flask(__name__, template_folder='./template')
 app.config['SECRET_KEY'] = 'asdasdasas'
 app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-openai.api_key = "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"
+
+
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
