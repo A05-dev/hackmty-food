@@ -8,7 +8,7 @@ import openai
 app = Flask(__name__, template_folder='./template')
 app.config['SECRET_KEY'] = 'asdasdasas'
 app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-openai.api_key = "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"
+openai.api_key = "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"
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
@@ -40,7 +40,7 @@ def upload_image():
         filename = photos.save(form.photo.data)
         file_url = url_for('get_file', filename=filename)
 
-    return render_template('index.html', form=form, response=response)
+    return render_template('index.html', form=form, response=response['choices'][0]['message']['content'])
 
 if __name__ == '__main__':
     app.run(debug=True)

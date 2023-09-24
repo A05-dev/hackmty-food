@@ -1,6 +1,7 @@
 # Ignore Pipenv filesp
 Pipfile
 .lock
+./uploads/*
 uploads
 poetry.lock
 Pipfile.lock
